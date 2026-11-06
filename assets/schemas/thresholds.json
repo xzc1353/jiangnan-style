@@ -1,0 +1,6 @@
+{
+  "_status": "uncalibrated",
+  "_note": "阈值占位文件。对本地语料运行 python scripts/audit_style.py corpus/source/ --calibrate -o assets/schemas/thresholds.json 后，本文件会被覆盖为实测区间。_status 字段变化后审计脚本才会进入 ok 判定模式。",
+  "fiction": {},
+  "essay": {}
+}

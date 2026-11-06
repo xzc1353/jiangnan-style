@@ -1,0 +1,73 @@
+# jiangnan-style
+
+> 一个用于**分析并复现中文作家江南（《龙族》《九州·缥缈录》《此间的少年》作者）行文技法**的 Agent Skill。非官方粉丝项目，仓库不含任何原作文本。
+
+## 它能做什么
+
+| 模式 | 输入 | 输出 |
+|---|---|---|
+| A 生成 | 设定/大纲/一句话需求 | 江南腔原创文本 |
+| B 改写 | 任意既有文本 | 保意的江南腔版本（v0.2） |
+| C 续写 | 前文片段 | 指纹一致的后文 |
+| D 诊断 | 一段文本 | 12 项量化指标 + 像不像的报告 |
+
+核心思路：**文风 = 骨架（叙事结构）× 皮肤（语言习惯）**。骨架与皮肤都被拆成可执行规则（`references/`），再用 12 项量化指标（`scripts/audit_style.py`）检验"结构上像不像"，人工评分卡检验"整体上像不像"。
+
+## 快速开始
+
+### 作为 Agent Skill 使用
+
+复制到你的 agent 技能目录（WorkBuddy / Claude Code / 其他兼容 agent 的 `skills/` 目录）：
+
+```bash
+cp -r jiangnan-style ~/.workbuddy/skills/   # WorkBuddy
+cp -r jiangnan-style ~/.claude/skills/      # Claude Code
+```
+
+然后直接说："用江南的文风写一个……"或"把这段改成江南的风格"。
+
+### 作为工具脚本使用
+
+```bash
+# 文本体检（12 项指标，阈值未标定时输出 uncalibrated）
+python scripts/audit_style.py 我的章节.md
+
+# 标定：用你本地合法持有的语料算阈值（只输出统计值，不输出原文）
+python scripts/audit_style.py corpus/source/ --calibrate -o assets/schemas/thresholds.json
+
+# EPUB 抽文本到本地语料目录
+python scripts/extract_epub.py "某本书.epub" -o corpus/source/
+```
+
+依赖：仅 Python 3.10+ 标准库。
+
+## 目录导览
+
+```
+SKILL.md            入口：任务路由 + 八条铁律
+references/         风格知识（style/ 骨架与皮肤 · adapters/ 题材×体裁 · rewrite/ · guardrails/）
+workflows/          场景 SOP（生成 / 改写 / 续写 / 诊断）
+scripts/            audit_style.py · extract_epub.py · overlap_check.py（v0.4）
+assets/             模板 · 评分卡 · JSON Schema
+examples/           全部自撰示例（before-after · prompts · golden · anti-examples）
+corpus/             本地语料，永久 gitignore，绝不入库
+docs/               ARCHITECTURE.md · ROADMAP.md
+```
+
+设计与决策详见 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)。
+
+## 合规边界（重要）
+
+- 本项目**不含、不分发、不引用**江南作品原文；所有示例为本项目自撰。
+- `references/` 只包含对写作技法的**抽象分析**；文风本身不受著作权保护，具体表达才受。
+- 产出为 AI 原创仿写，**严禁标注为江南本人作品**或用于冒充。
+- 同人创作默认关闭，启用时强制前置"非商用 + 标注出处"提示。
+- 完整声明见 [NOTICE.md](NOTICE.md)；语料纪律见 [corpus/README.md](corpus/README.md)。
+
+## 状态
+
+**v0.1.0**（2026-11-06）：生成链已通（骨架 + 皮肤 + 工作流 + 审计脚本）。改写链 v0.2，题材适配 v0.3，查重与 CI 守卫 v0.4。见 [CHANGELOG.md](CHANGELOG.md)。
+
+## License
+
+[MIT](LICENSE)。再次强调：本授权覆盖的是本项目自身的代码与文档，不含任何第三方作品内容。

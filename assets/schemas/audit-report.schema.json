@@ -1,0 +1,63 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "audit-report.schema.json",
+  "title": "jiangnan-style 审计报告",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["file", "metrics", "judgement"],
+    "properties": {
+      "file": { "type": "string" },
+      "metrics": {
+        "type": "object",
+        "required": [
+          "chars_han", "paragraphs", "sentences",
+          "M1_avg_sentence_len", "M2_short_sentence_ratio", "M3_single_sentence_para_ratio",
+          "M4_dialogue_line_ratio", "M5_avg_dialogue_len", "M6_simile_per_kilo",
+          "M7_simile_domain_dist", "M8_first_person_index", "M9_cold_punch_rate",
+          "M10_punct_per_kilo", "M10b_excl_per_kilo", "M11_fourchar_per_kilo", "M12_de_per_kilo"
+        ],
+        "properties": {
+          "chars_han": { "type": "integer" },
+          "paragraphs": { "type": "integer" },
+          "sentences": { "type": "integer" },
+          "M1_avg_sentence_len": { "type": "number" },
+          "M2_short_sentence_ratio": { "type": "number" },
+          "M3_single_sentence_para_ratio": { "type": "number" },
+          "M4_dialogue_line_ratio": { "type": "number" },
+          "M5_avg_dialogue_len": { "type": "number" },
+          "M6_simile_per_kilo": { "type": "number" },
+          "M7_simile_domain_dist": { "type": "object" },
+          "M8_first_person_index": { "type": "number" },
+          "M9_cold_punch_rate": { "type": "number" },
+          "M10_punct_per_kilo": { "type": "number" },
+          "M10b_excl_per_kilo": { "type": "number" },
+          "M11_fourchar_per_kilo": { "type": "number" },
+          "M12_de_per_kilo": { "type": "number" },
+          "mode": { "enum": ["fiction", "essay"] }
+        }
+      },
+      "judgement": {
+        "type": "object",
+        "required": ["status"],
+        "properties": {
+          "status": { "enum": ["ok", "uncalibrated"] },
+          "hint": { "type": "string" },
+          "verdict": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "properties": {
+                "value": { "type": "number" },
+                "level": { "enum": ["OK", "OUT_OF_TARGET", "OUT_OF_TOLERANCE"] },
+                "target": { "type": ["array", "null"], "items": { "type": "number" } },
+                "tolerate": { "type": ["array", "null"], "items": { "type": "number" } }
+              }
+            }
+          },
+          "summary": { "type": "string" }
+        }
+      }
+    }
+  }
+}
