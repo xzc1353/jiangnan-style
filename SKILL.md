@@ -18,12 +18,12 @@ agent_created: true
 | 用户意图 | 模式 | 必读文件 |
 |---|---|---|
 | 从零写一段/一篇（给设定、给大纲、给一句"帮我写个开头"） | **A 生成** | `workflows/wf-generate.md` + `references/style/01,02` + 对应 adapters |
-| 已有文本改成江南腔（"帮我改成""润色成江南风"） | **B 改写** | 先跑 `scripts/audit_style.py` 体检，再读 `workflows/wf-rewrite.md`（v0.2 起可用，此前退化为 A 模式规则重写） |
+| 已有文本改成江南腔（"帮我改成""润色成江南风"） | **B 改写** | 先跑 `scripts/audit_style.py` 体检，再读 `workflows/wf-rewrite.md` + `references/rewrite/01~03` |
 | 接着上文继续写 | **C 续写** | A 模式流程 + 先对上文跑 `audit_style.py` 锁定指纹（人称、时态、称谓不许漂移） |
 | 只要诊断不要改（"这段像不像江南""打个分"） | **D 诊断** | `scripts/audit_style.py` + `assets/rubric/style-scorecard.md`，只出报告 |
 | 写龙族/九州等同人 | **E 同人（默认关闭）** | 先读 `references/guardrails/fanfic-policy.md`，前置合规提示，征得用户确认后才进入 A 模式流程 |
 
-题材与体裁适配：每次写作前读 `references/adapters/genres/<题材>.md` 和 `adapters/forms/<体裁>.md` 各一份（v0.3 起提供；缺失时在报告中注明"该适配器未建，按 style 骨架直出"）。
+题材与体裁适配：每次写作前读 `references/adapters/genres/<题材>.md` 和 `adapters/forms/<体裁>.md` 各一份（已提供：校园/都市奇幻/东方奇幻/科幻/回忆散文 × 短篇/中篇/连载/片段/非虚构；缺失的组合按 style 骨架直出并注明）。
 
 ## 八条铁律（任何模式都生效）
 
@@ -43,8 +43,8 @@ agent_created: true
 | 节奏、断句、标点、口语、人称怎么定 | `references/style/02-voice.md` |
 | 结构、视角、时间线、章节钩子怎么排 | `references/style/01-skeleton.md` |
 | 意象怎么选、金句怎么造、幽默怎么分层 | `references/style/03~08`（已可用，基于 847 万字语料实证） |
-| "像不像"怎么判 | `references/style/09-dna.md` + `scripts/audit_style.py` |
-| 新题材/新体裁怎么套 | `references/adapters/`（v0.3 起提供） |
+| "像不像"怎么判 | `references/style/09-dna.md`（阈值已标定）+ `scripts/audit_style.py` |
+| 新题材/新体裁怎么套 | `references/adapters/`（5 题材 × 5 体裁已打样） |
 | 合规边界 | `references/guardrails/`（copyright / originality / fanfic-policy） |
 
 单次任务加载量控制在 8k–12k 字：`SKILL.md` 必读，`00-INDEX.md` 路由后读，其余按表按需。**禁止一次性读完整个 references/**。

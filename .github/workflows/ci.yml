@@ -1,0 +1,74 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 单元测试（纯标准库，无依赖安装）
+        run: python -m unittest discover -s tests -p "test_*.py" -v
+
+      - name: 守卫一 · 语料不入库
+        run: |
+          if git ls-files | grep -E "^corpus/(source|exemplars|stats)/"; then
+            echo "::error::语料/样例/统计文件被提交进仓库"; exit 1
+          fi
+          if git ls-files | grep -E "\.(epub|mobi|azw3?|umd)$"; then
+            echo "::error::电子书文件被提交进仓库"; exit 1
+          fi
+          echo "OK: 语料零入库"
+
+      - name: 守卫二 · 长原文扫描（对仓库内 md/txt 做 n-gram 自检）
+        run: |
+          python - <<'EOF'
+          import re, sys
+          from pathlib import Path
+          # 提取仓库内所有文本文件的长汉字串，查重复片段（同一仓库内不应有大段重复文本）
+          files = [p for p in Path('.').rglob('*') if p.suffix in {'.md', '.txt', '.py'}
+                   and '.git' not in p.parts and 'corpus' not in p.parts]
+          seen = {}
+          dup = 0
+          for f in files:
+              text = re.sub(r'\s+', '', f.read_text(encoding='utf-8', errors='replace'))
+              text = ''.join(c for c in text if '\u4e00' <= c <= '\u9fff')
+              grams = {text[i:i+200] for i in range(0, max(0, len(text)-200), 100)}
+              for g in grams:
+                  if len(g) < 200:
+                      continue
+                  if g in seen and seen[g] != f:
+                      print(f"重复片段: {f} 与 {seen[g]}")
+                      dup += 1
+                  seen.setdefault(g, f)
+          if dup:
+              print(f"::error::{dup} 处 ≥200 字重复文本"); sys.exit(1)
+          print("OK: 无长文本重复")
+          EOF
+
+      - name: 守卫三 · SKILL.md frontmatter 校验
+        run: |
+          python - <<'EOF'
+          import sys
+          from pathlib import Path
+          t = Path('SKILL.md').read_text(encoding='utf-8')
+          assert t.startswith('---'), 'SKILL.md 缺少 frontmatter'
+          fm = t.split('---')[1]
+          assert 'name: jiangnan-style' in fm, 'name 必须与目录名一致'
+          assert 'agent_created: true' in fm, '缺少 agent_created 标记'
+          assert len(fm) < 2000, 'description 过长'
+          print("OK: frontmatter 校验通过")
+          EOF
+
+      - name: 冒烟 · audit_style 对自撰样本跑通
+        run: |
+          printf '深夜的训练馆只剩他一个人，灯一盏一盏灭下去。他还没赢过。' > /tmp/smoke.txt
+          python scripts/audit_style.py /tmp/smoke.txt | head -3

@@ -16,22 +16,22 @@
 | `style/08-setpiece.md` | 名场面构造：镜头切分与冷拳位 | 高潮战役、关键转折 |
 | `style/09-dna.md` | 9 项量化指纹与阈值 | 体检、自检、标定 |
 
-## adapters/ —— 适配层（v0.3 起）
+## adapters/ —— 适配层
 
 | 文件 | 何时读 |
 |---|---|
-| `adapters/genres/campus.md` 等 | 每次写作读**一个**题材适配器 |
-| `adapters/forms/serial.md` 等 | 每次写作读**一个**体裁适配器 |
+| `adapters/genres/`（campus/urban/fantasy/scifi/memoir） | 每次写作读**一个**题材适配器 |
+| `adapters/forms/`（short-story/novella/serial/vignette/copywriting） | 每次写作读**一个**体裁适配器 |
 
 适配器只回答两个问题：这个世界里能出现什么；这个长度上节奏怎么排。**不允许适配器覆盖 style/ 的规则。**
 
-## rewrite/ —— 改写专用（v0.2 起，仅 B 模式读）
+## rewrite/ —— 改写专用（仅 B 模式读）
 
 | 文件 | 内容 |
 |---|---|
 | `rewrite/01-surgery-levels.md` | 三级手术：句级微调 / 段级重铸 / 全篇重写 |
 | `rewrite/02-preserve-meaning.md` | 保意清单：事实、数字、专名、立场、结构 |
-| `rewrite/03-ai-tells.md` | AI 腔清除清单 |
+| `rewrite/03-ai-tells.md` | AI 腔清除清单（六类，含检索式） |
 | `rewrite/04-diff-report.md` | 改写报告格式 |
 
 ## guardrails/ —— 红线（任何模式可读）

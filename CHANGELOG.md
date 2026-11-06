@@ -4,6 +4,20 @@
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-11-06
+
+### Added
+
+- **改写链全通**：`references/rewrite/` 四件套（三级手术/保意规则/AI 腔六类清单/报告格式）+ `workflows/wf-rewrite.md`（定级→锁定→手术→验收→报告）
+- `scripts/overlap_check.py`：n-gram 原创度守门（哈希索引省内存，src 精确校验滤碰撞），双向实测通过（原创 PASS / 74 字抄袭 FAIL）
+- `tests/`：12 个单元测试全绿（audit 8 + overlap 4）
+- `.github/workflows/ci.yml`：测试 + 三道守卫（语料零入库 / 长原文扫描 / frontmatter 校验）
+- `references/adapters/`：5 题材（校园/都市奇幻/东方奇幻/科幻/回忆散文）× 5 体裁（短篇/中篇/连载/片段/非虚构）打样
+- `assets/templates/`：开篇模板（四式）、章节模板（起承转钩）、改写对照表、伏笔账本
+- `references/guardrails/` 三件套落地：copyright（含引用 ≤3 处×25 字上限）/ originality（A-D 分档）/ fanfic-policy（四行强制确认）
+- `examples/before-after/` 首个 AI 腔→江南腔改写对照示例
+- `docs/ROADMAP.md` + `docs/CONTRIBUTING.md`
+
 ## [0.2.0] - 2026-11-06
 
 ### Added
