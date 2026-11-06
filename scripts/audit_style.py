@@ -170,9 +170,14 @@ def compute_metrics(text: str, mode: str = "fiction") -> dict:
     m10 = (excl + quest + elli) / n
     m10_excl = excl / n
 
-    # M11 四字格（粗代理）
-    four = re.findall(r"(?<![\u4e00-\u9fff])[\u4e00-\u9fff]{4}(?![\u4e00-\u9fff])", text)
-    m11 = len(four) / n
+    # M11 四字叠词格（AABB / ABAB）。v1.0.2 修正：
+    # 旧正则 [\u4e00-\u9fff]{4} 匹配任意被标点隔开的 4 连汉字（如"林小满说"），
+    # 与标点密度强相关，不是四字格。现只数真正的叠词四字结构：
+    #   AABB：干干净净 / 整整齐齐 / 叮叮当当
+    #   ABAB（2+2 重复）：一圈一圈 / 一下一下 / 研究研究
+    four = len(re.findall(r"([\u4e00-\u9fff])\1([\u4e00-\u9fff])\2", text))
+    four += len(re.findall(r"([\u4e00-\u9fff]{2})\1", text))
+    m11 = four / n
 
     # M12 “的”密度
     m12 = text.count("的") / n
