@@ -77,3 +77,38 @@ class TestThresholdsFile(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestSentenceSplit(unittest.TestCase):
+    """v1.0.1 回归测试：断句必须切分纯叙述句。
+
+    v1.0.0 的正则要求句末标点后必须跟右引号，导致所有无引号的叙述句都不被切分，
+    M1 实际算成了"每段字数"（虚高近一倍），整套阈值因此失真。以下用例锁死行为。
+    """
+
+    def test_narration_without_quotes(self):
+        from audit_style import split_sentences
+        s = split_sentences("他走进来。他坐下。他点了一根烟。")
+        self.assertEqual(len(s), 3)
+
+    def test_dialogue_with_closing_quote(self):
+        from audit_style import split_sentences
+        s = split_sentences("「我不行。」他说。窗外下雨了。")
+        self.assertEqual(len(s), 3)
+
+    def test_mixed_quotes_and_narration(self):
+        from audit_style import split_sentences
+        s = split_sentences("雨停了。他说：「走吧。」然后推开门。")
+        self.assertGreaterEqual(len(s), 3)
+
+    def test_paragraph_len_not_mistaken_for_sentence_len(self):
+        """一段话里有 4 个句号，平均句长必须远小于整段字数。"""
+        from audit_style import compute_metrics
+        text = "他走进来。他坐下。他点了一根烟。他看着窗外。"
+        m = compute_metrics(text)
+        self.assertLess(m["M1_avg_sentence_len"], 15)
+        self.assertEqual(m["sentences"], 4)
+
+
+if __name__ == "__main__":
+    unittest.main()

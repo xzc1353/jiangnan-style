@@ -72,6 +72,8 @@ docs/               ARCHITECTURE.md · ROADMAP.md · CONTRIBUTING.md
 
 ## 安装与使用
 
+> 📖 **第一次用请先读 [docs/使用教程.md](docs/使用教程.md)** —— 全文大白话，含七个场景的说话模板、报告怎么读、完整实战演示、20 条 FAQ 和术语表。下面是速览。
+
 **方式一：装成本地 skill**（WorkBuddy / Claude Code 通用）
 
 ```bash

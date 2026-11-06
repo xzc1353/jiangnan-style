@@ -64,6 +64,14 @@
 | `corpus-notes/scene-pointers.md` | 7 类场景的章节指针索引（不含原文） |
 | `corpus-notes/三本书对照.md` | 分册中位数对照：验证指纹跨作品稳定 + 题材趋势 |
 
+## 使用者文档
+
+| 文件 | 给谁看 |
+|---|---|
+| `docs/使用教程.md` | **第一次用的人**：七个场景怎么开口、报告怎么读、FAQ、术语表 |
+| `docs/ARCHITECTURE.md` | 想改架构的人：为什么这么分层 |
+| `docs/CONTRIBUTING.md` | 想提 PR 的人 |
+
 ## 体积纪律
 
 - 单次任务典型加载：`SKILL.md` + `00-INDEX`（本文件）+ `style/01,02` + 2 个 adapters ≈ 8k–10k 字

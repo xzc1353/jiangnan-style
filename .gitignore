@@ -19,7 +19,8 @@ corpus/**
 # ============================================================
 out/
 drafts/
-dist/          # 打包产物（发布时由 CI/本地 git archive 生成）
+# 打包产物（发布时由本地 git archive 生成）
+dist/
 *.tmp
 *.log
 .local/

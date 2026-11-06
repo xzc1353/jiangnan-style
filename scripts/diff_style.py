@@ -29,17 +29,17 @@ from audit_style import METRIC_KEYS, compute_metrics, load_thresholds, read_text
 # 指标的"好"方向：用于判断位移是变强还是变弱，而非变好变坏
 DIRECTION_HINT = {
     "M1_avg_sentence_len": "句长",
-    "M2_short_sentence_ratio": "短句密度",
-    "M3_single_sentence_para_ratio": "单句成段",
+    "M2_short_sentence_ratio": "短句占比",
+    "M3_single_sentence_para_ratio": "单句成段比",
     "M4_dialogue_line_ratio": "对话行占比",
     "M5_avg_dialogue_len": "对话回合长度",
     "M6_simile_per_kilo": "比喻密度",
     "M8_first_person_index": "第一人称",
     "M9_cold_punch_rate": "冷拳率",
-    "M10_punct_per_kilo": "标点密度",
-    "M10b_excl_per_kilo": "感叹号密度",
-    "M11_fourchar_per_kilo": "四字格密度",
-    "M12_de_per_kilo": "「的」字密度",
+    "M10_punct_per_kilo": "情绪标点",
+    "M10b_excl_per_kilo": "感叹号",
+    "M11_fourchar_per_kilo": "四字格",
+    "M12_de_per_kilo": "「的」字",
 }
 
 # 变化幅度达到多少算"显著位移"（相对值或绝对值取大者）
