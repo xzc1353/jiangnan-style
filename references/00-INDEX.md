@@ -14,7 +14,19 @@
 | `style/06-emotion.md` | 情绪收放、金句公式 | 抒情段、高潮段 |
 | `style/07-humor.md` | 幽默四层：自嘲/互损/荒诞/黑色 | 轻松段落 |
 | `style/08-setpiece.md` | 名场面构造：镜头切分与冷拳位 | 高潮战役、关键转折 |
-| `style/09-dna.md` | 9 项量化指纹与阈值 | 体检、自检、标定 |
+| `style/09-dna.md` | 12 项量化指纹与阈值（已标定） | 体检、自检、标定 |
+
+## workflows/ —— 执行层 SOP（按模式选**一个**）
+
+| 文件 | 模式 | 产出 |
+|---|---|---|
+| `workflows/wf-generate.md` | A 生成 | 正文 |
+| `workflows/wf-rewrite.md` | B 改写 | 正文 + 对照报告 |
+| `workflows/wf-continue.md` | C 续写 | 正文 + 指纹锁定表 |
+| `workflows/wf-critique.md` | D 诊断 | **只出报告**，不改文 |
+| `workflows/wf-fanfic.md` | E 同人（默认关） | 正文 + 合规标注块 |
+| `workflows/wf-polish.md` | F 润色 | 正文 + 改动清单（不动结构） |
+| `workflows/wf-outline.md` | G 大纲 | 结构表，**不写正文** |
 
 ## adapters/ —— 适配层
 
@@ -45,6 +57,12 @@
 ## corpus-notes/ —— 语料观察笔记
 
 只记**结构元数据**（卷章分布、篇幅、POV 规律），永不记原文。标定 `09-dna` 阈值时的结论存放处。
+
+| 文件 | 内容 |
+|---|---|
+| `corpus-notes/quant-findings.md` | 12 项指标 + n-gram + 修辞词频的十大发现（全局口径） |
+| `corpus-notes/scene-pointers.md` | 7 类场景的章节指针索引（不含原文） |
+| `corpus-notes/三本书对照.md` | 分册中位数对照：验证指纹跨作品稳定 + 题材趋势 |
 
 ## 体积纪律
 

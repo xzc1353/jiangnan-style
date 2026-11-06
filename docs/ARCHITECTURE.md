@@ -92,9 +92,9 @@ jiangnan-style/
 │   │   └── fanfic-policy.md      # 同人边界：可写不可商用、需标注、不得冒充原作者
 │   │
 │   └── corpus-notes/             # 语料观察笔记 ★只记"结构元数据"，不存原文
-│       ├── longzu.md             #   龙族：卷/章结构、章节长度分布、POV 切换规律
-│       ├── piaomiao.md           #   缥缈录：六卷叙事弧、支线密度
-│       └── collection-25.md      #   合集 25 册：作品清单与各作风格差异
+│       ├── quant-findings.md     #   12 项指标 + n-gram + 修辞词频的十大发现（全局口径）
+│       ├── scene-pointers.md     #   7 类场景的章节指针索引（第几章，不含原文）
+│       └── 三本书对照.md          #   分册中位数对照：验证指纹跨作品稳定 + 古装↔现代趋势
 │
 ├── workflows/                    # ===== 执行层：场景 SOP =====
 │   ├── wf-generate.md            # 从零生成：立意 → 骨架 → 分镜 → 成文 → 自审
@@ -102,7 +102,7 @@ jiangnan-style/
 │   ├── wf-continue.md            # 续写：前文指纹提取 → 一致性锁定 → 接续
 │   ├── wf-outline.md             # 先大纲：给长篇先出结构，避免写着跑偏
 │   ├── wf-polish.md              # 轻度润色：只调字词句，结构与内容不动
-│   ├── wf-critique.md            # 诊断：按 9 项 DNA 打分 + 给出 3 条最优先改法
+│   ├── wf-critique.md            # 诊断：按 12 项 DNA + 9 维评分卡，只出报告 + 给出 3 条最优先改法
 │   └── wf-fanfic.md              # 同人：合规提示前置 + 人物一致性表 + 非商用声明
 │
 ├── scripts/                      # ===== 执行层：确定性工具 =====
@@ -191,7 +191,7 @@ jiangnan-style/
 
 ## 六、"像不像"要能量化
 
-`style/09-dna.md` 定义指标，`scripts/audit_style.py` 负责算。初版 9 项：
+`style/09-dna.md` 定义指标，`scripts/audit_style.py` 负责算。共 12 项（M7 比喻取材域为分布型，不参与阈值判定）：
 
 1. 平均句长 + 短句（<12 字）占比
 2. 单句成段的比例
@@ -239,10 +239,10 @@ jiangnan-style/
 ## 九、分期路线
 
 - **v0.1**：`SKILL.md` + `style/01,02,09` + `wf-generate` + `audit_style.py` → 能生成、能打分
-- **v0.2**：补齐 `style/03~08` + `wf-rewrite` + `rewrite/` → 改写能力上线
-- **v0.3**：`adapters/` 五个题材两条体裁打样 + `examples/before-after`
-- **v0.4**：`overlap_check.py` + `guardrails/` + CI 守卫
-- **v1.0**：盲测（拿自写样本混在真作里让人判断，目标 ≥ 80% 误判率）+ 发布
+- **v0.2**：`auto_analyze.py` 全量标定 + `style/03~08` → 规则有数据依据
+- **v0.3**：`wf-rewrite` + `rewrite/` + `overlap_check.py` + `adapters/` + CI 守卫
+- **v1.0**：补齐 `wf-continue / critique / polish / outline / fanfic` + `diff_style.py` + `add_reference.py` → 七模式全通
+- **v1.1（待做）**：盲测（拿自写样本混在真作里让人判断，目标 ≥ 80% 误判率）
 
 ---
 

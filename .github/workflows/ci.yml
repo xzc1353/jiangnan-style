@@ -72,3 +72,23 @@ jobs:
         run: |
           printf '深夜的训练馆只剩他一个人，灯一盏一盏灭下去。他还没赢过。' > /tmp/smoke.txt
           python scripts/audit_style.py /tmp/smoke.txt | head -3
+
+      - name: 冒烟 · diff_style 双向跑通
+        run: |
+          printf '他的内心充满了悲伤，仿佛整个世界都崩塌了。' > /tmp/a.txt
+          printf '雨下了很久。他坐在台阶上。' > /tmp/b.txt
+          python scripts/diff_style.py /tmp/a.txt /tmp/b.txt | tail -6
+
+      - name: 冒烟 · golden 样本可被审计且方向正确
+        run: |
+          python - <<'EOF'
+          import json, subprocess, sys
+          out = subprocess.run([sys.executable, 'scripts/audit_style.py',
+                                'examples/golden/样本01-修车铺的雨.md', '--json'],
+                               capture_output=True, text=True).stdout
+          m = json.loads(out)[0]['metrics']   # --json 输出的是按文件的列表
+          # 只校验方向：平均句长应落在长句区间，绝不能是全短句轰炸
+          assert m['M1_avg_sentence_len'] > 25, f"M1 过低: {m['M1_avg_sentence_len']}"
+          assert 0.5 < m['M3_single_sentence_para_ratio'] < 0.95, "M3 异常"
+          print('OK: golden 样本指标方向正确')
+          EOF

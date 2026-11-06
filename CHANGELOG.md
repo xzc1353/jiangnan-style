@@ -4,6 +4,31 @@
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-11-06
+
+首个完整版：**七个任务模式全部有 SOP，所有脚本实测通过，文档与实现无悬空引用。**
+
+### Added
+
+- `workflows/` 补齐五个：`wf-continue`（续写：六项指纹锁定表）/ `wf-critique`（诊断：只出报告不改文，三条最优先改法）/ `wf-polish`（润色：只动字词句，禁改结构）/ `wf-outline`（大纲：内核→三问→卷幕→章节表→伏笔账本）/ `wf-fanfic`（同人：四行合规确认前置）
+- `scripts/diff_style.py`：改写前后**维度级**对照（12 项指标位移 + 保意核查：数字串/台词丢失 + 反推手术级别 L1/L2/L3），含 CJK 列宽对齐
+- `scripts/add_reference.py`：新增题材/体裁适配器并自动登记进 `00-INDEX.md`（幂等，实测）
+- `examples/golden/样本01-修车铺的雨.md` + 评注：自撰合格样本，**附实测指标与偏差分析**
+- `examples/anti-examples/五种假江南.md`：五种高频失败模式的错例/病灶/改法
+- `references/corpus-notes/三本书对照.md`：分册中位数对照，验证指纹跨作品稳定 + 古装↔现代趋势
+- `tests/test_diff.py`：15 个新测试（总 27 个）
+
+### Fixed
+
+- **`style/02-voice.md` 与实测冲突**：原写"短句独立成段预算千字 3–4 次"，但语料实测单句成段占 70%（是常态而非武器），真正的冷拳只占段落 0–3.5%（约千字 1 次）。已改写定义并同步 `wf-generate.md`
+- `SKILL.md` / `00-INDEX.md` / `ARCHITECTURE.md` 把指标数写成"9 项"（实际 12 项），全部校正
+- `README.md` 状态段停留在 v0.1.0、把已完成的功能标为"v0.4 待做"，已重写并补「安装与使用」章节
+- 删除 19 个已有实文件目录里的冗余 `.gitkeep`，删除空目录 `tests/fixtures`、`.github/ISSUE_TEMPLATE`
+
+### Changed
+
+- 任务路由表从 5 模式扩到 7 模式（新增 F 润色、G 大纲），并显式警告 F 与 B 判错就越权改结构
+
 ## [0.3.0] - 2026-11-06
 
 ### Added

@@ -44,14 +44,14 @@ python scripts/extract_epub.py "某本书.epub" -o corpus/source/
 ## 目录导览
 
 ```
-SKILL.md            入口：任务路由 + 八条铁律
-references/         风格知识（style/ 骨架与皮肤 · adapters/ 题材×体裁 · rewrite/ · guardrails/）
-workflows/          场景 SOP（生成 / 改写 / 续写 / 诊断）
-scripts/            audit_style.py · extract_epub.py · overlap_check.py（v0.4）
-assets/             模板 · 评分卡 · JSON Schema
+SKILL.md            入口：任务路由（7 模式）+ 八条铁律
+references/         风格知识（style/ 骨架与皮肤 · adapters/ 题材×体裁 · rewrite/ · guardrails/ · corpus-notes/）
+workflows/          场景 SOP（生成 / 改写 / 续写 / 诊断 / 润色 / 大纲 / 同人）
+scripts/            audit_style.py · diff_style.py · overlap_check.py · extract_epub.py · add_reference.py
+assets/             模板 · 评分卡 · JSON Schema（阈值）
 examples/           全部自撰示例（before-after · prompts · golden · anti-examples）
 corpus/             本地语料，永久 gitignore，绝不入库
-docs/               ARCHITECTURE.md · ROADMAP.md
+docs/               ARCHITECTURE.md · ROADMAP.md · CONTRIBUTING.md
 ```
 
 设计与决策详见 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)。
@@ -66,7 +66,37 @@ docs/               ARCHITECTURE.md · ROADMAP.md
 
 ## 状态
 
-**v0.1.0**（2026-11-06）：生成链已通（骨架 + 皮肤 + 工作流 + 审计脚本）。改写链 v0.2，题材适配 v0.3，查重与 CI 守卫 v0.4。见 [CHANGELOG.md](CHANGELOG.md)。
+**v1.0.0**（2026-11-06）：七模式全通（生成 / 改写 / 续写 / 诊断 / 润色 / 大纲 / 同人）。12 项指标阈值已用 846 万字语料标定，5 个脚本 + 12 个单测 + CI 守卫就绪。
+
+下一步（v1.1）为盲测：把自撰样本混在真人作品里请人判断，目标 ≥80% 无法分辨。见 [CHANGELOG.md](CHANGELOG.md) 与 [docs/ROADMAP.md](docs/ROADMAP.md)。
+
+## 安装与使用
+
+**方式一：装成本地 skill**（WorkBuddy / Claude Code 通用）
+
+```bash
+# 目录名必须与 SKILL.md 里的 name 一致
+cp -r jiangnan-style ~/.workbuddy/skills/jiangnan-style
+```
+
+装好后直接说话即可触发，不需要敲命令：
+
+- "用江南的文风写一个雨夜里的告别" → A 生成
+- "把这段改成江南腔" → B 改写
+- "接着这段往下写" → C 续写
+- "这段像不像江南？打个分" → D 诊断
+- "只帮我润色一下，别改内容" → F 润色
+- "先给我一个中篇的大纲" → G 大纲
+
+**方式二：不装 skill，直接跑脚本**
+
+```bash
+python scripts/audit_style.py 你的文本.txt        # 12 项指标体检
+python scripts/diff_style.py 原文.txt 改后.txt     # 改写前后对照
+python scripts/overlap_check.py 你的产出.txt --corpus corpus/source/   # 查重（需本地语料）
+```
+
+**本地语料是可选的。** 没有语料时：`audit_style.py` 用仓库内已标定的阈值照常工作；`overlap_check.py` 不可用（无参照）；`--calibrate` 会失败。详见 [corpus/README.md](corpus/README.md)。
 
 ## License
 

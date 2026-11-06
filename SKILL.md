@@ -19,9 +19,11 @@ agent_created: true
 |---|---|---|
 | 从零写一段/一篇（给设定、给大纲、给一句"帮我写个开头"） | **A 生成** | `workflows/wf-generate.md` + `references/style/01,02` + 对应 adapters |
 | 已有文本改成江南腔（"帮我改成""润色成江南风"） | **B 改写** | 先跑 `scripts/audit_style.py` 体检，再读 `workflows/wf-rewrite.md` + `references/rewrite/01~03` |
-| 接着上文继续写 | **C 续写** | A 模式流程 + 先对上文跑 `audit_style.py` 锁定指纹（人称、时态、称谓不许漂移） |
-| 只要诊断不要改（"这段像不像江南""打个分"） | **D 诊断** | `scripts/audit_style.py` + `assets/rubric/style-scorecard.md`，只出报告 |
-| 写龙族/九州等同人 | **E 同人（默认关闭）** | 先读 `references/guardrails/fanfic-policy.md`，前置合规提示，征得用户确认后才进入 A 模式流程 |
+| 接着上文继续写 | **C 续写** | `workflows/wf-continue.md`（先对上文跑 `audit_style.py` 锁定六项指纹） |
+| 只要诊断不要改（"这段像不像江南""打个分"） | **D 诊断** | `workflows/wf-critique.md` + `scripts/audit_style.py` + `assets/rubric/style-scorecard.md`，**只出报告** |
+| 写龙族/九州等同人 | **E 同人（默认关闭）** | `workflows/wf-fanfic.md`，第 0 步四行合规确认，用户回复"确认"后才进入 A 模式流程 |
+| 只理顺语言，不动内容（"润色/改改句子"） | **F 润色** | `workflows/wf-polish.md`（**注意与 B 区分**：判错就越权改结构） |
+| 长篇先出结构（"先给我个大纲"） | **G 大纲** | `workflows/wf-outline.md`（本流程不写正文） |
 
 题材与体裁适配：每次写作前读 `references/adapters/genres/<题材>.md` 和 `adapters/forms/<体裁>.md` 各一份（已提供：校园/都市奇幻/东方奇幻/科幻/回忆散文 × 短篇/中篇/连载/片段/非虚构；缺失的组合按 style 骨架直出并注明）。
 
@@ -52,7 +54,7 @@ agent_created: true
 ## 工具
 
 ```bash
-# 文本体检：9 项指标 + 阈值判定（默认只提示；--json 输出机器可读报告）
+# 文本体检：12 项指标 + 阈值判定（默认只提示；--json 输出机器可读报告）
 python scripts/audit_style.py <文本文件或目录> [--thresholds assets/schemas/thresholds.json] [--json] [--mode essay]
 
 # 本地 EPUB 抽纯文本到 corpus/（永不入库）
@@ -63,11 +65,18 @@ python scripts/audit_style.py corpus/source/ --calibrate -o assets/schemas/thres
 
 # 查重：产出 vs 本地语料，最长公共片段 >=15 字即报警
 python scripts/overlap_check.py <产出文件> --corpus corpus/source/
+
+# 改写前后维度对照：比的是 12 项指标位移，不是文本 diff（含保意核查）
+python scripts/diff_style.py <原文> <产出> [--strict]
+
+# 新增题材/体裁适配器并自动登记进 00-INDEX
+python scripts/add_reference.py genre <slug> --title "中文标题" --when "何时读"
 ```
 
 ## 交付前自检（固化动作，不许跳）
 
-1. `audit_style.py` 跑一遍，9 项指标与 `09-dna.md` 目标区间对照，超界项定点重写；
-2. `overlap_check.py` 过一遍（有本地语料时），无 15 字以上重合；
-3. 逐条核对八条铁律，在交付说明里用一行给出"铁律自检：1✓ 2✓ …"；
-4. 若涉及同人，确认已带非商用标注。
+1. `audit_style.py` 跑一遍，12 项指标与 `09-dna.md` 目标区间对照，超界项定点重写；
+2. 改写类任务再跑 `diff_style.py`，保意核查里数字串零变更、台词零丢失；
+3. `overlap_check.py` 过一遍（有本地语料时），无 15 字以上重合；
+4. 逐条核对八条铁律，在交付说明里用一行给出"铁律自检：1✓ 2✓ …"；
+5. 若涉及同人，确认已带非商用标注。
