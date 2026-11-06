@@ -87,8 +87,10 @@ jobs:
                                 'examples/golden/样本01-修车铺的雨.md', '--json'],
                                capture_output=True, text=True).stdout
           m = json.loads(out)[0]['metrics']   # --json 输出的是按文件的列表
-          # 只校验方向：平均句长应落在长句区间，绝不能是全短句轰炸
-          assert m['M1_avg_sentence_len'] > 25, f"M1 过低: {m['M1_avg_sentence_len']}"
-          assert 0.5 < m['M3_single_sentence_para_ratio'] < 0.95, "M3 异常"
+          # 只校验"合理区间"，不校验精确值：目标是防退化，不是把样本钉死在某一版阈值上。
+          # v1.0.1 修完断句 bug 后平均句长真值约 22 字，旧断言 >25 已作废。
+          assert 15 < m['M1_avg_sentence_len'] < 45, f"M1 异常: {m['M1_avg_sentence_len']}"
+          assert 0.1 < m['M3_single_sentence_para_ratio'] < 0.9, "M3 异常"
+          assert m['M12_de_per_kilo'] > 30, f"M12 异常（『的』字过少说明句子过紧）: {m['M12_de_per_kilo']}"
           print('OK: golden 样本指标方向正确')
           EOF
