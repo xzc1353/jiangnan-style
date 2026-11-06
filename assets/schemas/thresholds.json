@@ -1,6 +1,126 @@
 {
-  "_status": "uncalibrated",
-  "_note": "阈值占位文件。对本地语料运行 python scripts/audit_style.py corpus/source/ --calibrate -o assets/schemas/thresholds.json 后，本文件会被覆盖为实测区间。_status 字段变化后审计脚本才会进入 ok 判定模式。",
-  "fiction": {},
-  "essay": {}
+ "_status": "calibrated",
+ "_n_files": 1680,
+ "fiction": {
+  "M1_avg_sentence_len": {
+   "target": [
+    36.305,
+    49.145
+   ],
+   "tolerate": [
+    31.504,
+    59.228
+   ]
+  },
+  "M2_short_sentence_ratio": {
+   "target": [
+    0.1951,
+    0.3108
+   ],
+   "tolerate": [
+    0.1408,
+    0.3623
+   ]
+  },
+  "M3_single_sentence_para_ratio": {
+   "target": [
+    0.6238,
+    0.7954
+   ],
+   "tolerate": [
+    0.5493,
+    0.8768
+   ]
+  },
+  "M4_dialogue_line_ratio": {
+   "target": [
+    0.4203,
+    0.6638
+   ],
+   "tolerate": [
+    0.2778,
+    0.7613
+   ]
+  },
+  "M5_avg_dialogue_len": {
+   "target": [
+    40.905,
+    58.98
+   ],
+   "tolerate": [
+    34.444,
+    71.512
+   ]
+  },
+  "M6_simile_per_kilo": {
+   "target": [
+    1.61,
+    3.23
+   ],
+   "tolerate": [
+    0.93,
+    4.228
+   ]
+  },
+  "M8_first_person_index": {
+   "target": [
+    0.292,
+    0.828
+   ],
+   "tolerate": [
+    0.1452,
+    1.2958
+   ]
+  },
+  "M9_cold_punch_rate": {
+   "target": [
+    0.0,
+    0.0345
+   ],
+   "tolerate": [
+    0.0,
+    0.0525
+   ]
+  },
+  "M10_punct_per_kilo": {
+   "target": [
+    9.315,
+    19.575
+   ],
+   "tolerate": [
+    5.852,
+    25.91
+   ]
+  },
+  "M10b_excl_per_kilo": {
+   "target": [
+    2.08,
+    5.975
+   ],
+   "tolerate": [
+    0.974,
+    8.434
+   ]
+  },
+  "M11_fourchar_per_kilo": {
+   "target": [
+    5.415,
+    9.55
+   ],
+   "tolerate": [
+    4.216,
+    11.778
+   ]
+  },
+  "M12_de_per_kilo": {
+   "target": [
+    40.925,
+    48.75
+   ],
+   "tolerate": [
+    36.684,
+    52.436
+   ]
+  }
+ }
 }

@@ -81,6 +81,13 @@ def clean(s: str) -> str:
     return s.strip()
 
 
+def sanitize(name: str, maxlen: int = 60) -> str:
+    """Windows 文件名净化：非法字符、ADS 触发符、超长一并处理。"""
+    name = re.sub(r'[\\/:*?"<>|\x00-\x1f]', "_", name)
+    name = re.sub(r"\s+", " ", name).strip(" .")
+    return (name[:maxlen] or "untitled")
+
+
 def extract(epub_path: Path, out_dir: Path, single_file: bool) -> list[Path]:
     out_dir.mkdir(parents=True, exist_ok=True)
     outputs: list[Path] = []
@@ -89,10 +96,11 @@ def extract(epub_path: Path, out_dir: Path, single_file: bool) -> list[Path]:
         opf = find_opf(zf)
         title, docs = parse_opf(zf, opf)
 
-        safe_title = re.sub(r'[\\/:*?"<>|]', "_", title).strip() or epub_path.stem
+        safe_title = sanitize(title)
         parts: list[str] = [f"《{title}》\n"]
 
-        for href in docs:
+        # spine 序号做前缀，彻底避免章节名净化后互相撞名覆盖
+        for idx, href in enumerate(docs, 1):
             try:
                 raw = zf.read(href)
             except KeyError:
@@ -103,10 +111,9 @@ def extract(epub_path: Path, out_dir: Path, single_file: bool) -> list[Path]:
             if not text:
                 continue
             if single_file:
-                parts.append(f"\n\n----- {Path(href).name} -----\n\n{text}")
+                parts.append(f"\n\n----- {idx:04d} {Path(href).name} -----\n\n{text}")
             else:
-                # NTFS 会把 "::" 解析为备用数据流(ADS)导致 PermissionError，用 "__" 分隔
-                out = out_dir / f"{safe_title}__{Path(href).stem}.txt"
+                out = out_dir / f"{safe_title}__{idx:04d}_{sanitize(Path(href).stem, 30)}.txt"
                 out.write_text(text, encoding="utf-8", newline="\n")
                 outputs.append(out)
 

@@ -42,7 +42,7 @@ agent_created: true
 |---|---|
 | 节奏、断句、标点、口语、人称怎么定 | `references/style/02-voice.md` |
 | 结构、视角、时间线、章节钩子怎么排 | `references/style/01-skeleton.md` |
-| 意象怎么选、金句怎么造、幽默怎么分层 | `references/style/03~08`（v0.2 起提供） |
+| 意象怎么选、金句怎么造、幽默怎么分层 | `references/style/03~08`（已可用，基于 847 万字语料实证） |
 | "像不像"怎么判 | `references/style/09-dna.md` + `scripts/audit_style.py` |
 | 新题材/新体裁怎么套 | `references/adapters/`（v0.3 起提供） |
 | 合规边界 | `references/guardrails/`（copyright / originality / fanfic-policy） |

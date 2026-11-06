@@ -4,6 +4,25 @@
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-11-06
+
+### Added
+
+- `scripts/auto_analyze.py`：全自动分析流水线（量化特征 + 场景切片 + 阈值标定 + 报告），1007 万字 29 秒跑完
+- `references/style/03-imagery.md` ～ `08-setpiece.md`：六份风格规则文件，全部基于语料实证（每个文件标注"数据依据"）
+- `references/corpus-notes/quant-findings.md`：十大核心发现（句长双峰、单句成段 69.8%、对话双口径、比喻朴素直给、"忽然"扳机词等）
+- `references/corpus-notes/scene-pointers.md`：7 类场景切片指针索引（不含原文）
+- `assets/schemas/thresholds.json`：12 项指标阈值正式标定（`_status: calibrated`），09-dna.md 已回填
+
+### Fixed
+
+- `extract_epub.py`：Windows 文件名三连坑（非法字符 / NTFS ADS 触发符 / 撞名覆盖），章节文件改为"spine 序号 + 净化名"，三本 EPUB 全量重抽成功（1680 章 / 1007 万字符）
+
+### Compliance
+
+- 场景样例原文仅存 `corpus/exemplars/`（gitignore）；`references/` 只存模式结论与指针，仓库保持零原文
+
+
 ## [0.1.0] - 2026-11-06
 
 ### Added
