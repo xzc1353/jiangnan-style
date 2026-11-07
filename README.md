@@ -51,7 +51,7 @@ scripts/            audit_style.py · diff_style.py · overlap_check.py · extra
 assets/             模板 · 评分卡 · JSON Schema（阈值）
 examples/           全部自撰示例（before-after · prompts · golden · anti-examples）
 corpus/             本地语料，永久 gitignore，绝不入库
-docs/               ARCHITECTURE.md · ROADMAP.md · CONTRIBUTING.md
+docs/               ARCHITECTURE.md · ROADMAP.md · CONTRIBUTING.md · 使用教程.md · 手机粘贴版提示词.md
 ```
 
 设计与决策详见 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)。
@@ -97,6 +97,10 @@ python scripts/audit_style.py 你的文本.txt        # 12 项指标体检
 python scripts/diff_style.py 原文.txt 改后.txt     # 改写前后对照
 python scripts/overlap_check.py 你的产出.txt --corpus corpus/source/   # 查重（需本地语料）
 ```
+
+**方式三：手机上用（不装任何东西）**
+
+打开 [docs/手机粘贴版提示词.md](docs/手机粘贴版提示词.md)，把横线之间的提示词整段复制，贴到任何手机 AI 软件（豆包、DeepSeek、Kimi 等）的对话开头，再跟一句写作需求即可。约 1500 字，覆盖风格核心七条规则；没有机器审计能力，"像不像"靠文末自检三条人工把关。
 
 **本地语料是可选的。** 没有语料时：`audit_style.py` 用仓库内已标定的阈值照常工作；`overlap_check.py` 不可用（无参照）；`--calibrate` 会失败。详见 [corpus/README.md](corpus/README.md)。
 
